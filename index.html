@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Code Runner</title>
+</head>
+<body>
+  <h1>Simple Code Runner</h1>
+
+  <!-- حقل لإدخال الكود -->
+  <textarea id="code" rows="10" cols="50" placeholder="اكتب الكود هنا..."></textarea>
+  <br>
+
+  <!-- زر لتشغيل الكود -->
+  <button onclick="runCode()">Run</button>
+  <br>
+
+  <!-- مكان لإظهار المخرجات -->
+  <pre id="output"></pre>
+
+  <script>
+    async function runCode() {
+      const code = document.getElementById('code').value;
+
+      if (!code) {
+        alert('يرجى إدخال الكود!');
+        return;
+      }
+
+      const response = await fetch('/run', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const result = await response.text();
+      document.getElementById('output').innerText = result;
+    }
+  </script>
+</body>
+</html>
